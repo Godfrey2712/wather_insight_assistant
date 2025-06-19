@@ -27,7 +27,10 @@ jobs:
       - name: Install backend deps
         run: pip install -r backend/requirements.txt
 
-      - name: Run backend tests with PYTHONPATH
+      - name: Run backend tests with credentials
+        env:
+          AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
         run: PYTHONPATH=backend pytest backend/tests
 
       - name: Log in to Docker Hub
