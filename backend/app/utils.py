@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from langchain.schema import Document
+#from langchain.schema import Document
 
 def load_weather_data(filename="curated_data.csv"):
     # Resolve path: backend/app/ → backend/ → backend/data/curated_data.csv
