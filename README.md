@@ -117,3 +117,81 @@ The following environment variables are required:
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [React Documentation](https://reactjs.org/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+## Deploying Backend API to Azure Container Apps from DOcker Hub
+
+### Steps to Deploy
+
+1. **Install Azure CLI**  
+    For Ubuntu:  
+    ```bash
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    ```
+    Check it's working:  
+    ```bash
+    az version
+    ```
+
+2. **Login to Azure**  
+    ```bash
+    az login
+    ```
+
+3. **Create Resource Group and Environment**  
+    ```bash
+    az group create --name weather-rg --location westeurope
+    az containerapp env create \
+      --name weather-env \
+      --resource-group weather-rg \
+      --location westeurope
+    ```
+
+4. **Build and Push Docker Image**  
+    You need a Docker registry. Two options:  
+
+    **Option A: Use Docker Hub (simpler)**  
+    Login:  
+    ```bash
+    docker login
+    ```  
+    Build your image from the backend folder:  
+    ```bash
+    cd backend
+    docker build -t yourdockerhubuser/weather-api:latest .
+    ```  
+    Push it:  
+    ```bash
+    docker push yourdockerhubuser/weather-api:latest
+    ```
+
+5. **Deploy to Azure Container App**  
+    Using Docker Hub:  
+    ```bash
+    az containerapp create \
+      --name weather-api \
+      --resource-group weather-rg \
+      --environment weather-env \
+      --image yourdockerhubuser/weather-api:latest \
+      --target-port 8000 \
+      --ingress external \
+      --env-vars \
+         AZURE_OPENAI_KEY=<your-api-key> \
+         AZURE_OPENAI_ENDPOINT=https://<your-endpoint>.cognitiveservices.azure.com/
+    ```
+
+    ## Live Backend API
+
+    The current live backend API is available in Swagger for testing and exploration:  
+    [Weather API Swagger Documentation](https://weather-api.victorioussea-d774307a.westeurope.azurecontainerapps.io/docs)
+
+    ## Fetching the Deployed Backend's Public URL
+
+    To retrieve the public URL of the deployed backend, use the following Azure CLI command:
+
+    ```bash
+    az containerapp show \
+        --name weather-api \
+        --resource-group weather-rg \
+        --query properties.configuration.ingress.fqdn \
+        --output tsv
+    ```
