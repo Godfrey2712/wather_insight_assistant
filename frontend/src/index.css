@@ -1,0 +1,40 @@
+body {
+    font-family: 'Inter', sans-serif; /* Modern font */
+    margin: 0;
+    padding: 1rem;
+    background-color: #e8f0fe; /* Light blue background for a professional feel */
+    color: #2c3e50; /* Darker text for better contrast */
+    line-height: 1.6; /* Improved readability */
+}
+
+.chat-container {
+    background-color: #ffffff;
+    border-radius: 12px; /* Softer corners */
+    padding: 1.5rem; /* Comfortable padding */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 600px; /* Limit width for better readability */
+    margin: 2rem auto; /* Center the container */
+    border: 2px solid #4a90e2; /* Add a professional blue border */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.chat-container:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    border-color: #2c82c9; /* Darker blue border on hover */
+}
+
+.chat-container h1, .chat-container p {
+    color: #34495e; /* Professional dark gray for text inside the container */
+}
+
+.chat-container h1 {
+    font-size: 1.8rem; /* Larger heading for emphasis */
+    margin-bottom: 1rem;
+    color: #4a90e2; /* Blue heading for a professional touch */
+}
+
+.chat-container p {
+    font-size: 1rem; /* Standard paragraph size */
+    margin-bottom: 0.5rem;
+}
