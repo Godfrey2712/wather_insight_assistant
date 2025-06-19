@@ -8,7 +8,8 @@ const Chat = () => {
   const handleAsk = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/ask", {
+      //use this url for local testing http://localhost:8000/ask
+      const res = await fetch("https://weather-api.victorioussea-d774307a.westeurope.azurecontainerapps.io/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: input }),
