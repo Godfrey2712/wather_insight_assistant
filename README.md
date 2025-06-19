@@ -195,3 +195,8 @@ The following environment variables are required:
         --query properties.configuration.ingress.fqdn \
         --output tsv
     ```
+
+    ## Live Frontend URL
+
+    The live frontend application is deployed using Azure Static Web Apps and can be accessed at:  
+    [Weather Insight Frontend](https://blue-desert-0f166e803.2.azurestaticapps.net/)

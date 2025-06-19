@@ -24,7 +24,7 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <h2>Weather Assistant</h2>
+      <h2>Weather Assistant AI</h2>
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
