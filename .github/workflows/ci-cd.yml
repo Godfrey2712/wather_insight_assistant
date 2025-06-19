@@ -51,5 +51,4 @@ jobs:
           az containerapp update \
             --name $AZURE_CONTAINERAPP_NAME \
             --resource-group $AZURE_RESOURCE_GROUP \
-            --image ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest \
-            --environment $AZURE_CONTAINER_ENV
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
