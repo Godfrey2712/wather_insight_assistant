@@ -1,202 +1,182 @@
-Weather Source API:
-[Meteostat JSON API](https://dev.meteostat.net/api/)
+# 🌤️ Weather Insight Assistant
 
-## Overview
+> A full-stack, Azure-powered weather analysis chatbot system\
+> Built with Microsoft Fabric, Azure OpenAI, React, Docker, and CI/CD
 
-This project provides a weather-based data pipeline and chatbot interface to analyze weather trends and their potential impact on energy demand. The system integrates data ingestion, transformation, and a conversational AI interface for querying weather insights.
+---
 
-## Features
+## 🔠 What This Project Does
 
-### Data Pipeline
-- **Ingestion**: Fetches hourly weather data from the Meteostat API for a specified location (e.g., Toronto).
-- **Transformation**: Converts raw weather data into a curated schema using PySpark for downstream analysis.
-- **Storage**: Saves curated data in a Lakehouse table and as CSV files for easy access.
+- Ingests weather data from [Meteostat API](https://dev.meteostat.net/api/) via Microsoft Fabric from Rapid API
+- Curates it into structured CSV for querying
+- Lets users interact via a GPT-4o chatbot
+- Deploys frontend + backend to Azure with CI/CD pipelines
 
-### Chatbot
-- **Conversational Interface**: Allows users to ask weather-related questions and receive insights.
-- **Powered by Azure OpenAI**: Uses GPT-based models to generate responses based on weather data.
-- **Contextual Analysis**: Converts weather data into a readable format for the AI model.
+---
 
-### Frontend
-- **Interactive UI**: A React-based interface for users to input questions and view chatbot responses.
+## 🔧 Technologies Used
 
-### Infrastructure
-- **Azure Integration**: Utilizes Azure OpenAI and Bicep templates for cloud infrastructure deployment.
-- **CI/CD**: Automated testing and deployment using GitHub Actions.
+| Area | Stack |
+| ---- | ----- |
+| Data |       |
 
-## System Architecture
+| **Microsoft Fabric** (Lakehouse, Notebooks) |                                                     |
+| ------------------------------------------- | --------------------------------------------------- |
+| AI Model                                    | **Azure OpenAI** (GPT-4o via RAG)                   |
+| Frontend                                    | **React + TypeScript**                              |
+| Backend                                     | **FastAPI + Docker**                                |
+| DevOps                                      | **GitHub Actions CI/CD**                            |
+| Hosting                                     | **Azure Container Apps**, **Azure Static Web Apps** |
 
-1. **Data Ingestion**:
-    - File: `data-pipeline/weather_ingest.py`
-    - Fetches weather data using the Meteostat API and saves it locally.
+---
 
-2. **Data Transformation**:
-    - File: `data-pipeline/transform_to_curated.py`
-    - Transforms raw weather data into a curated schema using PySpark.
+## 📁 Architecture Overview
 
-3. **Backend**:
-    - File: `backend/app/chatbot.py`
-    - Handles chatbot logic and integrates with Azure OpenAI for generating responses.
-    - File: `backend/app/utils.py`
-    - Provides utility functions for loading and formatting weather data.
+```text
+[ Meteostat API ] ---> [ Fabric Ingestion & Notebook ] ---> [ Curated CSV (Lakehouse) ]
+                                                              ↓
+                                                        [ FastAPI + Azure OpenAI ]
+                                                              ↓
+                                                      [ React Chat Interface (SPA) ]
+```
 
-4. **Frontend**:
-    - File: `frontend/src/components/Chat.tsx`
-    - Implements the chat interface for user interaction.
+---
 
-5. **Testing**:
-    - File: `backend/tests/test_chatbot.py`
-    - Includes unit tests for chatbot functionality.
+## ✅ Features
 
-6. **Deployment**:
-    - File: `.github/workflows/ci-cd.yml`
-    - Automates testing and deployment processes.
+### 📡 Data Ingestion & Storage
 
-## Environment Variables
+- Ingests hourly weather data using Microsoft Fabric notebooks
+- Saves curated data to both Lakehouse table & CSV
 
-The following environment variables are required:
-- `AZURE_OPENAI_KEY`: API key for Azure OpenAI.
-- `AZURE_OPENAI_ENDPOINT`: Endpoint for Azure OpenAI.
-- `X-Rapidapi-Key`: API key for Meteostat.
+### 💬 Chatbot with Azure OpenAI
 
-## Sample Queries for Chatbot
+- Conversational UI with GPT-4o
+- Answers natural language queries about trends, anomalies, etc.
 
-### 🌡️ Temperature-based Demand Patterns
+### 🖥️ Frontend (React + TypeScript)
+
+- Chat UI built with Vite + TypeScript
+- Calls backend API for responses
+
+### 🚀 CI/CD + Deployment
+
+- Backend: Deployed via Docker to Azure Container Apps
+- Frontend: Auto-deployed to Azure Static Web Apps
+- GitHub Actions automate tests & deployments
+
+---
+
+## 🌐 Live Demos
+
+| Component       | URL                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------ |
+| 🔙 Backend API  | [Swagger Docs](https://weather-api.victorioussea-d774307a.westeurope.azurecontainerapps.io/docs) |
+| 🕒 Frontend     | [Live Chat App](https://blue-desert-0f166e803.2.azurestaticapps.net/)                            |
+| 🐳 Docker Image | [Docker Hub](https://hub.docker.com/r/godfrey27/weather-api)                                     |
+
+---
+
+## 🥞 Sample Questions to Try
+
 - “What was the temperature trend over the past 3 days?”
-- “How did the temperature drop affect demand on June 15?”
-- “Was there a sudden spike in temperature yesterday that might correlate with increased usage?”
+- “Did wind speed spike this week?”
+- “Summarise the weather conditions in the last 24 hours.”
+- “Compare humidity between June 10 and June 12.”
 
-### 💨 Wind/Humidity Influence
-- “Was the wind speed unusually high during any period this week?”
-- “Compare humidity between June 10 and June 12 — was it a factor in energy demand?”
-- “Does high humidity correspond with high energy usage?”
+---
 
-### 📈 Trend Analysis & Alerts
-- “List any weather anomalies in the last 48 hours that may have caused demand spikes.”
-- “Which hours today had both low temperature and high wind speed?”
-- “What weather conditions typically lead to demand spikes in the evening?”
+## ⚙️ Run Locally
 
-### 🔄 General Diagnostic & Summary
-- “Summarise the weather conditions over the last 24 hours.”
-- “What weather pattern do we see this week that could affect power usage?”
-- “How does today’s weather compare to the same time last week?”
+### 1. Clone the Repo
 
-## How to Run
+```bash
+git clone https://github.com/yourusername/weather_insight_assistant
+cd weather_insight_assistant
+```
 
-1. **Backend**:
-    - Install dependencies: `pip install -r backend/requirements.txt`
-    - Run the server: `uvicorn backend/app/main:app --host 0.0.0.0 --port 8000`
+### 2. Backend (FastAPI)
 
-2. **Frontend**:
-    - Navigate to the `frontend` directory.
-    - Install dependencies: `npm install`
-    - Start the development server: `npm start`
+```bash
+cd backend
+docker build -t weather-api .
+docker run -p 8000:8000 --env-file ../.env weather-api
+```
 
-3. **Data Pipeline**:
-    - Run ingestion: `python data-pipeline/weather_ingest.py`
-    - Run transformation: `python data-pipeline/transform_to_curated.py`
+### 3. Frontend (React)
 
-4. **Testing**:
-    - Run tests: `pytest backend/tests --cov=app`
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## Deployment
+### 4. Tests
 
-- Use the provided Bicep templates in the `infra` directory for Azure resource provisioning.
-- CI/CD pipeline is configured in `.github/workflows/ci-cd.yml`.
+```bash
+PYTHONPATH=backend pytest backend/tests
+```
 
-## Notes
+---
 
-- Ensure the `.env` file is correctly configured with the required API keys.
-- The chatbot relies on the curated weather data stored in `data/curated_data.csv`.
+## 🤖 CI/CD Setup
 
-## References
+### Backend: `.github/workflows/ci-cd.yml`
 
-- [Meteostat API Documentation](https://dev.meteostat.net/api/)
-- [Azure OpenAI Documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/)
-- [PySpark Documentation](https://spark.apache.org/docs/latest/api/python/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [React Documentation](https://reactjs.org/)
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- Builds image
+- Runs tests
+- Pushes to Docker Hub
+- Deploys to Azure Container App
 
-## Deploying Backend API to Azure Container Apps from DOcker Hub
+### Frontend: `.github/workflows/azure-static-web-apps-*.yml`
 
-### Steps to Deploy
+- Builds with Vite
+- Deploys to Azure Static Web Apps
 
-1. **Install Azure CLI**  
-    For Ubuntu:  
-    ```bash
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    ```
-    Check it's working:  
-    ```bash
-    az version
-    ```
+---
 
-2. **Login to Azure**  
-    ```bash
-    az login
-    ```
+## ☁️ Deploy Backend to Azure (Manually)
 
-3. **Create Resource Group and Environment**  
-    ```bash
-    az group create --name weather-rg --location westeurope
-    az containerapp env create \
-      --name weather-env \
-      --resource-group weather-rg \
-      --location westeurope
-    ```
+```bash
+# 1. Create infra
+az group create --name weather-rg --location westeurope
+az containerapp env create --name weather-env --resource-group weather-rg --location westeurope
 
-4. **Build and Push Docker Image**  
-    You need a Docker registry. Two options:  
+# 2. Build and push
+docker build -t godfrey27/weather-api:latest .
+docker push godfrey27/weather-api:latest
 
-    **Option A: Use Docker Hub (simpler)**  
-    Login:  
-    ```bash
-    docker login
-    ```  
-    Build your image from the backend folder:  
-    ```bash
-    cd backend
-    docker build -t yourdockerhubuser/weather-api:latest .
-    ```  
-    Push it:  
-    ```bash
-    docker push yourdockerhubuser/weather-api:latest
-    ```
+# 3. Deploy
+az containerapp create \
+  --name weather-api \
+  --resource-group weather-rg \
+  --environment weather-env \
+  --image godfrey27/weather-api:latest \
+  --target-port 8000 \
+  --ingress external \
+  --env-vars \
+    AZURE_OPENAI_KEY=<your-api-key> \
+    AZURE_OPENAI_ENDPOINT=https://<your-endpoint>.cognitiveservices.azure.com/
+```
 
-5. **Deploy to Azure Container App**  
-    Using Docker Hub:  
-    ```bash
-    az containerapp create \
-      --name weather-api \
-      --resource-group weather-rg \
-      --environment weather-env \
-      --image yourdockerhubuser/weather-api:latest \
-      --target-port 8000 \
-      --ingress external \
-      --env-vars \
-         AZURE_OPENAI_KEY=<your-api-key> \
-         AZURE_OPENAI_ENDPOINT=https://<your-endpoint>.cognitiveservices.azure.com/
-    ```
+---
 
-    ## Live Backend API
+## 🔐 Environment Variables Required
 
-    The current live backend API is available in Swagger for testing and exploration:  
-    [Weather API Swagger Documentation](https://weather-api.victorioussea-d774307a.westeurope.azurecontainerapps.io/docs)
+Set these in `.env` and/or GitHub Secrets:
 
-    ## Fetching the Deployed Backend's Public URL
+```env
+AZURE_OPENAI_KEY=<your-api-key>
+AZURE_OPENAI_ENDPOINT=https://<your-endpoint>
+X-Rapidapi-Key=<your-rapidapi-key>
+```
 
-    To retrieve the public URL of the deployed backend, use the following Azure CLI command:
+---
 
-    ```bash
-    az containerapp show \
-        --name weather-api \
-        --resource-group weather-rg \
-        --query properties.configuration.ingress.fqdn \
-        --output tsv
-    ```
+## 📋 References
 
-    ## Live Frontend URL
-
-    The live frontend application is deployed using Azure Static Web Apps and can be accessed at:  
-    [Weather Insight Frontend](https://blue-desert-0f166e803.2.azurestaticapps.net/)
+- [Azure OpenAI Docs](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/)
+- [Meteostat API](https://dev.meteostat.net/api/)
+- [Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/)
+- [GitHub Actions](https://docs.github.com/en/actions)
+- [Vite](https://vitejs.dev/)
