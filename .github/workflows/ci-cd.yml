@@ -28,7 +28,8 @@ jobs:
         run: pip install -r backend/requirements.txt
 
       - name: Run tests
-        run: pytest backend/tests
+        working-directory: ./backend
+        run: pytest
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
